@@ -8,10 +8,10 @@ from schedulers import Task
 
 def init_task_db():
     # init beat
-    task = Task.objects.upsert_one(type='beat')[0]
-    task.update(set__interval=TASK_BEAT, set__last_run_at=datetime.now())
-    worker = Task.objects.upsert_one(type='worker')[0]
-    worker.update(set__interval=TASK_WORKER, set__last_run_at=datetime.now())
+    task = Task.objects(type='beat')
+    task.update_one(set__interval=TASK_BEAT, set__last_run_at=datetime.now())
+    worker = Task.objects(type='worker')
+    worker.update_one(set__interval=TASK_WORKER, set__last_run_at=datetime.now())
 
 
 def main():

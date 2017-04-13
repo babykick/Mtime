@@ -2,7 +2,7 @@
 '''所有配置'''
 
 # MONGODB数据库
-HOST = '127.0.0.1'
+HOST = '183.214.7.9'
 PORT = 27017
 DATABASE = 'mtime'
 
