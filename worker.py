@@ -75,7 +75,7 @@ def real_mapper(queryset):
                 Model(**result).save()
                 # 别名体系, 这样只需要全局记录一个人物就知道他们的全部别名
                 for k, v in p._alias.items():
-                    models.AliasName.objects.get_or_create(
+                    models.AliasName.objects.upsert_one(
                         name=k)[0].update(add_to_set__alias=v)
                 if hasnext:
                     count += 1

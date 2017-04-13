@@ -109,7 +109,7 @@ def mtime_beat():
             try:
                 Message(year=y, task=task, payload=payload).save()
                 # Hack一下
-                #Message.objects.get_or_create(year=y, task=task, payload=payload)
+                #Message.objects.upsert_one(year=y, task=task, payload=payload)
             except NotUniqueError:
                 debug('Duplicate insert: [{}], payload: {}'.format(task, payload))
     # 当前年份数据已经入MQ
