@@ -29,7 +29,7 @@ def real_mapper(queryset):
                 # 别名体系, 这样只需要全局记录一个人物就知道他们的全部别名
                 for k, v in p._alias.items():
                     models.AliasName.objects(
-                        name=k).update_one(add_to_set__alias=v)
+                        name=k).update_one(add_to_set__alias=v, upsert=True)
                 if hasnext:
                     count += 1
                     url = p.original_url
