@@ -47,7 +47,7 @@ def fetch(year, page):
 
 
 def mtime_beat():
-    '''每次任务只跑一年的'''
+    '''生成爬取电影信息的各种任务，每次任务只跑一年的'''
     y_list = []
     y = get_year() + 1  # 要抓取的年份
     debug('Fetch Year: {} starting...'.format(y))
