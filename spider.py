@@ -93,7 +93,7 @@ class Spider(object):
         if params:
             url = '{}?{}'.format(url, params)
         req = urllib2.Request(url)
-        self.content = urllib2.urlopen(req).read()
+        self.content = urllib2.urlopen(req).read()  # Keep in content
         debug('Fetch Url: {} done'.format(url))
 
     @classmethod

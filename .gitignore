@@ -1,8 +1,9 @@
 *.py[cod]
+**/*.log
+**/*.pid
 
 # C extensions
 *.so
-
 # Packages
 *.egg
 *.egg-info

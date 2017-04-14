@@ -51,7 +51,7 @@ def mtime_beat():
     y_list = []
     y = get_year() + 1  # 要抓取的年份
     debug('Fetch Year: {} starting...'.format(y))
-    instance = fetch(y, 1)
+    instance = fetch(y, 1) # 搜索年份y的电影，取一页
     page = get_movie_pages(instance)
     if page is None:
         warn('Movie"page has not fetched')
@@ -59,6 +59,7 @@ def mtime_beat():
         if scheduler.get_interval < TASK_BEAT * 7:
             scheduler.change_interval(incr=True)
         return
+
     ids = get_movie_ids(instance)
     if ids is None:
         # 间隔自适应也不能太大
@@ -66,10 +67,12 @@ def mtime_beat():
         if scheduler.get_interval < TASK_BEAT * 7:
             scheduler.change_interval(incr=True)
         return
+
     # 当任务继续能执行的时候,回到默认的间隔
     if scheduler.get_interval > TASK_BEAT:
         debug('Interval back to default')
         scheduler.change_interval(TASK_BEAT)
+
     y_list.extend(ids)
     if not y_list:
         # 本年没有电影
@@ -77,6 +80,8 @@ def mtime_beat():
         YearFinished(year=y).save()
         sleep2()
         return mtime_beat()
+    
+    # 翻页获取
     if page > 1:
         p = 2
         while p <= page:
@@ -99,7 +104,8 @@ def mtime_beat():
         has_finished = obj.ids
     else:
         has_finished = []
-    to_process = get_unfinished(has_finished, y_list)
+    to_process = get_unfinished(has_finished, y_list)  # 未爬完的电影id集合
+
     # 给相应队列添加任务
     for payload in group(to_process, TASK_BEAT_NUM):
         for task in ['Fullcredits', 'Movie', 'Comment', 'Character',
@@ -107,6 +113,7 @@ def mtime_beat():
                      'Details']:
             debug('Push payload: {} to {} Queue'.format(payload, task))
             try:
+                # 加入任务队列，关于每部电影的各种任务
                 Message(year=y, task=task, payload=payload).save()
                 # Hack一下
                 #Message.objects.upsert_one(year=y, task=task, payload=payload)
