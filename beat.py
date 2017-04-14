@@ -113,7 +113,7 @@ def mtime_beat():
                      'Details']:
             debug('Push payload: {} to {} Queue'.format(payload, task))
             try:
-                # 加入任务队列，关于每部电影的各种任务
+                # 加入任务队列，关于每部电影的各类型任务
                 Message(year=y, task=task, payload=payload).save()
                 # Hack一下
                 #Message.objects.upsert_one(year=y, task=task, payload=payload)
